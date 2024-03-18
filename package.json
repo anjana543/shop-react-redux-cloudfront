@@ -1,10 +1,10 @@
 {
-  "name": "store",
+  "name": "aws-app",
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "react-scripts --openssl-legacy-provider start",
+    "build": "react-scripts --openssl-legacy-provider build",
     "client:deploy": "sls client deploy --no-config-change --no-policy-change --no-cors-change",
     "client:deploy:nc": "npm run client:deploy -- --no-confirm",
     "client:build:deploy": "npm run build && npm run client:deploy",
