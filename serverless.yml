@@ -19,7 +19,7 @@ plugins:
 
 custom:
   client:
-    bucketName: aws-bucket-test-2
+    bucketName: aws-bucket-task-2
     distributionFolder: build
   s3BucketName: ${self:custom.client.bucketName}
 
