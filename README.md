@@ -1,4 +1,4 @@
 ## 2.3. Save your work 
-CloudFront URL - [https://d11md63r7o32g4.cloudfront.net](https://d11md63r7o32g4.cloudfront.net)
+CloudFront URL - [https://d33k59fh1g2uei.cloudfront.net](https://d33k59fh1g2uei.cloudfront.net)
 
-S3 bucket - [https://aws-bucket-task-2.s3.eu-west-1.amazonaws.com/index.html](https://aws-bucket-task-2.s3.eu-west-1.amazonaws.com/index.html)
+S3 bucket - [https://aws-bucket-task-2.s3.ap-south-1.amazonaws.com/index.html](https://aws-bucket-task-2.s3.ap-south-1.amazonaws.com/index.html)
