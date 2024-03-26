@@ -2,6 +2,22 @@ import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
 import productList from "./productList.json";
 import { Product } from "models/Product";
 
+/**
+ * @swagger
+ * /products:
+ *   get:
+ *     summary: Get a list of products
+ *     description: Retrieve a list of products from the Product Service
+ *     responses:
+ *       '200':
+ *         description: A JSON array of products
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Product'
+ */
 export const getProductsList = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
   try {
     const productList = await fetchProductList();
@@ -26,6 +42,29 @@ export const getProductsList = async (event: APIGatewayProxyEvent): Promise<APIG
   }
 };
 
+/**
+ * @swagger
+ * /products/{productId}:
+ *   get:
+ *     summary: Get a product by ID
+ *     description: Retrieve a product by its unique identifier from the Product Service
+ *     parameters:
+ *       - in: path
+ *         name: productId
+ *         required: true
+ *         description: ID of the product to retrieve
+ *         schema:
+ *           type: string
+ *     responses:
+ *       '200':
+ *         description: A JSON object representing the product
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Product'
+ *       '404':
+ *         description: Product not found
+ */
 export const getProductsById = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
   try {
     const productId = event.pathParameters?.productId;
