@@ -1,51 +1,83 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
 import productList from "./productList.json";
+import { Product } from "models/Product";
 
 export const getProductsList = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
-  return {
-    statusCode: 200,
-    headers: {
-      'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*', // Adjust CORS policy as needed
-    },
-    body: JSON.stringify(productList),
-  };
-};
+  try {
+    const productList = await fetchProductList();
 
-export const getProductsById = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
-  const productId = event.pathParameters?.productId;
-
-  if (!productId) {
-    return {
-      statusCode: 400,
-      headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*',
-      },
-      body: JSON.stringify({ message: 'Product ID is missing' }),
-    };
-  }
-
-  // Search for product by productId
-  const product = productList.find((p) => p.id === productId);
-
-  if (product) {
     return {
       statusCode: 200,
       headers: {
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*',
       },
-      body: JSON.stringify(product),
+      body: JSON.stringify(productList),
     };
-  } else {
+  } catch (error) {
     return {
-      statusCode: 404,
+      statusCode: 500,
       headers: {
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*',
       },
-      body: JSON.stringify({ message: 'Product not found' }),
+      body: JSON.stringify({ message: 'Internal Server Error' }),
     };
   }
+};
+
+export const getProductsById = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
+  try {
+    const productId = event.pathParameters?.productId;
+
+    if (!productId) {
+      return {
+        statusCode: 400,
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+        },
+        body: JSON.stringify({ message: 'Product ID is missing' }),
+      };
+    }
+
+    const product = await findProductById(productId);
+
+    if (product) {
+      return {
+        statusCode: 200,
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+        },
+        body: JSON.stringify(product),
+      };
+    } else {
+      return {
+        statusCode: 404,
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+        },
+        body: JSON.stringify({ message: 'Product not found' }),
+      };
+    }
+  } catch (error) {
+    return {
+      statusCode: 500,
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+      },
+      body: JSON.stringify({ message: 'Internal Server Error' }),
+    };
+  }
+};
+
+const fetchProductList = async (): Promise<Product[]> => {
+  return productList;
+};
+
+const findProductById = async (productId: string): Promise<Product | undefined> => {
+  return productList.find(product => product.id === productId);
 };
